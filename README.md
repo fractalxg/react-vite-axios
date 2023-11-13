@@ -1,8 +1,14 @@
-# React + Vite
+COMO RODAR O PROJETO
+Instalar todas as dependências indicadas pelo package.json
+### npm install
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Adicionar o .env com a api key da https://openweathermap.org/api e o endereço do servidor 
 
-Currently, two official plugins are available:
+Exemplo de .env vazio:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+VITE_REACT_APP_API_KEY=
+VITE_REACT_APP_SERVER_URL=
+
+Inicializar o Projeto
+### npm run dev
+
