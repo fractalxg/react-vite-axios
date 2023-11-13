@@ -50,10 +50,10 @@ const headers = {
 }
 
 const PaginaInicial = () => {
-
+    //constantes para setar arquivo que usaremos para extrair as informações de clima e tempo
     const [weatherAPI, setWeatherAPI] = useState([])
     const [weatherBD, setWeatherBD] = useState([])
-
+    //constantes ref para extrair informações dos nossos elementos
     const main_date_ref = useRef(null)
     const city_name_ref = useRef(null)
     const main_icon_ref = useRef(null)
@@ -89,41 +89,30 @@ const PaginaInicial = () => {
     const timeElapsed = Date.now()
     const today = new Date(timeElapsed)
 
+    //função para detectar se o usuário pressionar enter
     const handleKeyDown = event => {
 
         if (event.key === 'Enter') {
             getWeather()
         }
     }
-
+    // função assincrona para obter informações de clima e tempo da nossa API/BD
     const getWeather = async () => {
 
         try {
-
-            const params = {
-                'today': today.toLocaleDateString(),
-                'city_name': city_name_ref.current.value
-            }
-            const response = await axios.get(`${local_host}/climate`, { params })
-            setWeatherBD(response.data)
-            console.log(response.data)
-
-        } catch (error) {
-
-        }
-
-        try {
-
+            //requisição para a API
             const response = await axios.get(`${url_forecast}${city_name_ref.current.value}&appid=${api_key}&units=metric&lang=pt_br`)
             //const response = await axios.get(`${local_host}/climate`, { params })
             setWeatherAPI([response.data])
             console.log([response.data])
 
+            //constantes para formatação de data
             const dayTime = date_time[0].value
             const weatherDay = dayTime.split(' ')
             const weatherDaySplitted = weatherDay[0].split('-')
             const weatherDayFormatted = `${weatherDaySplitted[2]}/${weatherDaySplitted[1]}/${weatherDaySplitted[0]}`
-
+           
+            //criando um "json" para fazer o post no BD
             const apiWeatherData = {
                 'today': today.toLocaleDateString(),
                 'weatherDay': weatherDayFormatted,
@@ -161,12 +150,12 @@ const PaginaInicial = () => {
             console.log(apiWeatherData)
 
             //Fazer a requisição para o servidor, indicando o método da requisição
-            //o endereço, enviar os dados do formulario e o cabeçalho
+            //o endereço, enviar os dados do "json" e o cabeçalho
             const responsePost = await axios.post(`${local_host}/climate`, apiWeatherData, headers)
             console.log(responsePost)
 
         } catch (error) {
-
+            // caso a requisição para API 
             const response = await axios.get(`${url_forecast}${local}&appid=${api_key}&units=metric&lang=pt_br`)
             //const response = await axios.get(`${local_host}/climate`, { params })
             setWeatherAPI([response.data])
@@ -176,7 +165,7 @@ const PaginaInicial = () => {
     }
 
     useEffect(() => {
-
+        // Chama a função para buscar dados ao montar o componente
         getWeather()
 
     }, [])
@@ -187,47 +176,47 @@ const PaginaInicial = () => {
 
             <div>
                 {(
-//Pendencias:se tiver cidade e data de hoje no BD = weatherBD.map, senão weatherAPI.map
-                    weatherAPI.map((item) => (
+                    //Pendencias:se tiver cidade e data de hoje no BD = weatherBD.map, senão weatherAPI.map
+                    weatherAPI.map((api) => (
 
-                        <div className="weather" key={item.city.id}>
+                        <div className="weather" key={api.city.id}>
 
                             <div className="data-container">
+                                {/* inputs invisiveis que usaremos para guardar dados de referencia */}
+                                <input ref={main_date_ref} type="hidden" name="data_main_date" value={api.list[0].dt_txt} readOnly />
+                                <input ref={main_icon_ref} type="hidden" value={api.list[0].weather[0].icon} readOnly />
+                                <input ref={main_temp_ref} type="hidden" value={api.list[0].main.temp} readOnly />
+                                <input ref={city_name_ref} type="hidden" value={api.city.name} readOnly />
+                                <input ref={humidity_ref} type="hidden" value={api.list[0].main.humidity} readOnly />
+                                <input ref={wind_speed_ref} type="hidden" value={api.list[0].wind.speed} readOnly />
 
-                                <input ref={main_date_ref} type="hidden" name="data_main_date" value={item.list[0].dt_txt} readOnly />
-                                <input ref={main_icon_ref} type="hidden" value={item.list[0].weather[0].icon} readOnly />
-                                <input ref={main_temp_ref} type="hidden" value={item.list[0].main.temp} readOnly />
-                                <input ref={city_name_ref} type="hidden" value={item.city.name} readOnly />
-                                <input ref={humidity_ref} type="hidden" value={item.list[0].main.humidity} readOnly />
-                                <input ref={wind_speed_ref} type="hidden" value={item.list[0].wind.speed} readOnly />
+                                <input ref={five_icon_0_ref} type="hidden" value={`https://openweathermap.org/img/wn/${api.list[8].weather[0].icon}@2x.png`} readOnly />
+                                <input ref={five_week_day_0_ref} type="hidden" value={dayToWeek(api.list[8].dt_txt)} readOnly />
+                                <input ref={five_max_temp_0_ref} type="hidden" value={api.list[8].main.temp_max} readOnly />
+                                <input ref={five_min_temp_0_ref} type="hidden" value={api.list[8].main.temp_min} readOnly />
 
-                                <input ref={five_icon_0_ref} type="hidden" value={`https://openweathermap.org/img/wn/${item.list[8].weather[0].icon}@2x.png`} readOnly />
-                                <input ref={five_week_day_0_ref} type="hidden" value={dayToWeek(item.list[8].dt_txt)} readOnly />
-                                <input ref={five_max_temp_0_ref} type="hidden" value={item.list[8].main.temp_max} readOnly />
-                                <input ref={five_min_temp_0_ref} type="hidden" value={item.list[8].main.temp_min} readOnly />
+                                <input ref={five_icon_1_ref} type="hidden" value={`https://openweathermap.org/img/wn/${api.list[16].weather[0].icon}@2x.png`} readOnly />
+                                <input ref={five_week_day_1_ref} type="hidden" value={dayToWeek(api.list[16].dt_txt)} readOnly />
+                                <input ref={five_max_temp_1_ref} type="hidden" value={api.list[16].main.temp_max} readOnly />
+                                <input ref={five_min_temp_1_ref} type="hidden" value={api.list[16].main.temp_min} readOnly />
 
-                                <input ref={five_icon_1_ref} type="hidden" value={`https://openweathermap.org/img/wn/${item.list[16].weather[0].icon}@2x.png`} readOnly />
-                                <input ref={five_week_day_1_ref} type="hidden" value={dayToWeek(item.list[16].dt_txt)} readOnly />
-                                <input ref={five_max_temp_1_ref} type="hidden" value={item.list[16].main.temp_max} readOnly />
-                                <input ref={five_min_temp_1_ref} type="hidden" value={item.list[16].main.temp_min} readOnly />
+                                <input ref={five_icon_2_ref} type="hidden" value={`https://openweathermap.org/img/wn/${api.list[24].weather[0].icon}@2x.png`} readOnly />
+                                <input ref={five_week_day_2_ref} type="hidden" value={dayToWeek(api.list[24].dt_txt)} readOnly />
+                                <input ref={five_max_temp_2_ref} type="hidden" value={api.list[24].main.temp_max} readOnly />
+                                <input ref={five_min_temp_2_ref} type="hidden" value={api.list[24].main.temp_min} readOnly />
 
-                                <input ref={five_icon_2_ref} type="hidden" value={`https://openweathermap.org/img/wn/${item.list[24].weather[0].icon}@2x.png`} readOnly />
-                                <input ref={five_week_day_2_ref} type="hidden" value={dayToWeek(item.list[24].dt_txt)} readOnly />
-                                <input ref={five_max_temp_2_ref} type="hidden" value={item.list[24].main.temp_max} readOnly />
-                                <input ref={five_min_temp_2_ref} type="hidden" value={item.list[24].main.temp_min} readOnly />
+                                <input ref={five_icon_3_ref} type="hidden" value={`https://openweathermap.org/img/wn/${api.list[32].weather[0].icon}@2x.png`} readOnly />
+                                <input ref={five_week_day_3_ref} type="hidden" value={dayToWeek(api.list[32].dt_txt)} readOnly />
+                                <input ref={five_max_temp_3_ref} type="hidden" value={api.list[32].main.temp_max} readOnly />
+                                <input ref={five_min_temp_3_ref} type="hidden" value={api.list[32].main.temp_min} readOnly />
 
-                                <input ref={five_icon_3_ref} type="hidden" value={`https://openweathermap.org/img/wn/${item.list[32].weather[0].icon}@2x.png`} readOnly />
-                                <input ref={five_week_day_3_ref} type="hidden" value={dayToWeek(item.list[32].dt_txt)} readOnly />
-                                <input ref={five_max_temp_3_ref} type="hidden" value={item.list[32].main.temp_max} readOnly />
-                                <input ref={five_min_temp_3_ref} type="hidden" value={item.list[32].main.temp_min} readOnly />
-
-                                <input ref={five_icon_4_ref} type="hidden" value={`https://openweathermap.org/img/wn/${item.list[39].weather[0].icon}@2x.png`} readOnly />
-                                <input ref={five_week_day_4_ref} type="hidden" value={dayToWeek(item.list[39].dt_txt)} readOnly />
-                                <input ref={five_max_temp_4_ref} type="hidden" value={item.list[39].main.temp_max} readOnly />
-                                <input ref={five_min_temp_4_ref} type="hidden" value={item.list[39].main.temp_min} readOnly />
+                                <input ref={five_icon_4_ref} type="hidden" value={`https://openweathermap.org/img/wn/${api.list[39].weather[0].icon}@2x.png`} readOnly />
+                                <input ref={five_week_day_4_ref} type="hidden" value={dayToWeek(api.list[39].dt_txt)} readOnly />
+                                <input ref={five_max_temp_4_ref} type="hidden" value={api.list[39].main.temp_max} readOnly />
+                                <input ref={five_min_temp_4_ref} type="hidden" value={api.list[39].main.temp_min} readOnly />
 
                             </div>
-
+                            {/* pagina inicial */}
                             <div className="top-bar">
                                 <input ref={city_name_ref} type="text" placeholder="Digite o nome de uma cidade" onKeyDown={handleKeyDown} />
                                 <div className="search-icon" >
@@ -235,22 +224,22 @@ const PaginaInicial = () => {
                                 </div>
                             </div>
                             <div className="weather-image">
-                                <img src={`https://openweathermap.org/img/wn/${item.list[0].weather[0].icon}@2x.png`} alt="" />
+                                <img src={`https://openweathermap.org/img/wn/${api.list[0].weather[0].icon}@2x.png`} alt="" />
                             </div>
-                            <div className="weather-temp">{item.list[0].main.temp}°c</div>
-                            <div className="weather-location">{item.city.name}</div>
+                            <div className="weather-temp">{api.list[0].main.temp}°c</div>
+                            <div className="weather-location">{api.city.name}</div>
                             <div className="data-container">
                                 <div className="element">
                                     <FontAwesomeIcon icon={faDroplet} className="element-icon" />
                                     <div className="data">
-                                        <div className="humidity-percent">{item.list[0].main.humidity}%</div>
+                                        <div className="humidity-percent">{api.list[0].main.humidity}%</div>
                                         <div className="text">Humidade</div>
                                     </div>
                                 </div>
                                 <div className="element">
                                     <FontAwesomeIcon icon={faWind} className="element-icon" />
                                     <div className="data">
-                                        <div className="wind-speed">{item.list[0].wind.speed} km/h</div>
+                                        <div className="wind-speed">{api.list[0].wind.speed} km/h</div>
                                         <div className="text">Velocidade do Vento</div>
                                     </div>
                                 </div>
@@ -259,38 +248,38 @@ const PaginaInicial = () => {
                             <div className="temp-container">
 
                                 <div className="temp-0">
-                                    <img src={`https://openweathermap.org/img/wn/${item.list[8].weather[0].icon}@2x.png`} alt="" />
-                                    <p className="week-text">{dayToWeek(item.list[8].dt_txt)}</p>
-                                    <p>Max. {item.list[8].main.temp_max}°c</p>
-                                    <p>Min. {item.list[8].main.temp_min}°c</p>
+                                    <img src={`https://openweathermap.org/img/wn/${api.list[8].weather[0].icon}@2x.png`} alt="" />
+                                    <p className="week-text">{dayToWeek(api.list[8].dt_txt)}</p>
+                                    <p>Max. {api.list[8].main.temp_max}°c</p>
+                                    <p>Min. {api.list[8].main.temp_min}°c</p>
                                 </div>
 
                                 <div className="temp-1">
-                                    <img src={`https://openweathermap.org/img/wn/${item.list[16].weather[0].icon}@2x.png`} alt="" />
-                                    <p className="week-text">{dayToWeek(item.list[16].dt_txt)}</p>
-                                    <p>Max. {item.list[16].main.temp_max}°c</p>
-                                    <p>Min. {item.list[16].main.temp_min}°c</p>
+                                    <img src={`https://openweathermap.org/img/wn/${api.list[16].weather[0].icon}@2x.png`} alt="" />
+                                    <p className="week-text">{dayToWeek(api.list[16].dt_txt)}</p>
+                                    <p>Max. {api.list[16].main.temp_max}°c</p>
+                                    <p>Min. {api.list[16].main.temp_min}°c</p>
                                 </div>
 
                                 <div className="temp-2">
-                                    <img src={`https://openweathermap.org/img/wn/${item.list[24].weather[0].icon}@2x.png`} alt="" />
-                                    <p className="week-text">{dayToWeek(item.list[24].dt_txt)}</p>
-                                    <p>Max. {item.list[24].main.temp_max}°c</p>
-                                    <p>Min. {item.list[24].main.temp_min}°c</p>
+                                    <img src={`https://openweathermap.org/img/wn/${api.list[24].weather[0].icon}@2x.png`} alt="" />
+                                    <p className="week-text">{dayToWeek(api.list[24].dt_txt)}</p>
+                                    <p>Max. {api.list[24].main.temp_max}°c</p>
+                                    <p>Min. {api.list[24].main.temp_min}°c</p>
                                 </div>
 
                                 <div className="temp-3">
-                                    <img src={`https://openweathermap.org/img/wn/${item.list[32].weather[0].icon}@2x.png`} alt="" />
-                                    <p className="week-text">{dayToWeek(item.list[32].dt_txt)}</p>
-                                    <p>Max. {item.list[32].main.temp_max}°c</p>
-                                    <p>Min. {item.list[32].main.temp_min}°c</p>
+                                    <img src={`https://openweathermap.org/img/wn/${api.list[32].weather[0].icon}@2x.png`} alt="" />
+                                    <p className="week-text">{dayToWeek(api.list[32].dt_txt)}</p>
+                                    <p>Max. {api.list[32].main.temp_max}°c</p>
+                                    <p>Min. {api.list[32].main.temp_min}°c</p>
                                 </div>
 
                                 <div className="temp-4">
-                                    <img src={`https://openweathermap.org/img/wn/${item.list[39].weather[0].icon}@2x.png`} alt="" />
-                                    <p className="week-text">{dayToWeek(item.list[39].dt_txt)}</p>
-                                    <p>Max. {item.list[39].main.temp_max}°c</p>
-                                    <p>Min. {item.list[39].main.temp_min}°c</p>
+                                    <img src={`https://openweathermap.org/img/wn/${api.list[39].weather[0].icon}@2x.png`} alt="" />
+                                    <p className="week-text">{dayToWeek(api.list[39].dt_txt)}</p>
+                                    <p>Max. {api.list[39].main.temp_max}°c</p>
+                                    <p>Min. {api.list[39].main.temp_min}°c</p>
                                 </div>
 
                             </div>
@@ -305,7 +294,7 @@ const PaginaInicial = () => {
             </div>
 
         </div>
-
+        
     )
 
 }

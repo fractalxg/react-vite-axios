@@ -4,8 +4,8 @@ import App from './App.jsx'
 import './index.css'
 
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
-
 import PaginaInicial from './routes/PaginaInicial.jsx'
+import ConsultasRealizadas from './routes/ConsultasRealizadas.jsx'
 
 const router = createBrowserRouter([
   {
@@ -15,6 +15,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <PaginaInicial />
       },
+      {
+        path: "/consultas",
+        element: <ConsultasRealizadas />
+      }
     ]
   }
 ])

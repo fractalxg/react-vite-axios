@@ -9,7 +9,18 @@ const Navbar = () => {
             <Link to ={`/`}>Clima e Tempo</Link>
         </h2>
         <ul>
+            <li>
+            <Link to ={`/consultas`}>Consultas Realizadas</Link>
+            </li>
+
+            <li>
+            <Link to ={`/`} className="new-btn">
+                Pesquisar
+            </Link>
+            </li>
+
         </ul>
+
     </nav>
   )
 }
