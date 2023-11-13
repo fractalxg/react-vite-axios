@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMagnifyingGlass, faWind, faDroplet } from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass, faWind, faDroplet, faMapLocationDot } from '@fortawesome/free-solid-svg-icons'
 import axios from "axios"
 import "./PaginaInicial.css"
 
 const api_key = import.meta.env.VITE_REACT_APP_API_KEY
 const local_host = import.meta.env.VITE_REACT_APP_SERVER_URL
 const url_forecast = "https://api.openweathermap.org/data/2.5/forecast?q="
-let local ="São Paulo"
+let local = "São Paulo"
 
 const date_time = document.getElementsByName("data_main_date")
 
@@ -50,9 +50,11 @@ const headers = {
 }
 
 const PaginaInicial = () => {
+    // constantes de latitude e longitude
+    const [latitude, setLatitude] = useState("");
+    const [longitude, setLongitude] = useState("");
     //constantes para setar arquivo que usaremos para extrair as informações de clima e tempo
     const [weatherAPI, setWeatherAPI] = useState([])
-    const [weatherBD, setWeatherBD] = useState([])
     //constantes ref para extrair informações dos nossos elementos
     const main_date_ref = useRef(null)
     const city_name_ref = useRef(null)
@@ -96,10 +98,26 @@ const PaginaInicial = () => {
             getWeather()
         }
     }
+
+    const getUserLocationWeather = async () => {
+        try {
+            const response = await axios.get(`${url_forecast}&lat=${latitude}&lon=${longitude}&appid=${api_key}&units=metric&lang=pt_br`)
+            setWeatherAPI([response.data])
+            console.log(response.data)
+
+        } catch (error) {
+            console.log(error)
+        }
+
+
+    }
+
     // função assincrona para obter informações de clima e tempo da nossa API/BD
     const getWeather = async () => {
 
         try {
+            
+
             //requisição para a API
             const response = await axios.get(`${url_forecast}${city_name_ref.current.value}&appid=${api_key}&units=metric&lang=pt_br`)
             //const response = await axios.get(`${local_host}/climate`, { params })
@@ -111,7 +129,7 @@ const PaginaInicial = () => {
             const weatherDay = dayTime.split(' ')
             const weatherDaySplitted = weatherDay[0].split('-')
             const weatherDayFormatted = `${weatherDaySplitted[2]}/${weatherDaySplitted[1]}/${weatherDaySplitted[0]}`
-           
+            
             //criando um "json" para fazer o post no BD
             const apiWeatherData = {
                 'today': today.toLocaleDateString(),
@@ -147,7 +165,8 @@ const PaginaInicial = () => {
                 'five_max_temp_4': five_max_temp_4_ref.current.value,
                 'five_min_temp_4': five_min_temp_4_ref.current.value,
             }
-            console.log(apiWeatherData)
+            console.log([apiWeatherData])
+
 
             //Fazer a requisição para o servidor, indicando o método da requisição
             //o endereço, enviar os dados do "json" e o cabeçalho
@@ -155,20 +174,42 @@ const PaginaInicial = () => {
             console.log(responsePost)
 
         } catch (error) {
-            // caso a requisição para API 
+            // requisição para API usando latitude e longitude, se não encontrar usar let local *NAO FINALIZADO*
+            // try {
+            // const response = await axios.get(`${url_forecast}&lat=${latitude}&lon=${longitude}&appid=${api_key}&units=metric&lang=pt_br`)
+            // setWeatherAPI([response.data])
+
+            // } catch (error) {
             const response = await axios.get(`${url_forecast}${local}&appid=${api_key}&units=metric&lang=pt_br`)
             //const response = await axios.get(`${local_host}/climate`, { params })
             setWeatherAPI([response.data])
+            //}
+
 
         }
 
     }
 
+
     useEffect(() => {
+        const getLocation = async () => {
+            navigator.geolocation.getCurrentPosition((position) => {
+                setLatitude(position.coords.latitude);
+                setLongitude(position.coords.longitude);
+
+            })
+        }
+        //obtendo a latitude e longitude do usuario
+        getLocation()
         // Chama a função para buscar dados ao montar o componente
         getWeather()
 
     }, [])
+
+    useEffect(() => {
+
+        console.log(latitude, longitude);
+    }, [latitude, longitude]);
 
     return (
 
@@ -176,10 +217,14 @@ const PaginaInicial = () => {
 
             <div>
                 {(
-                    //Pendencias:se tiver cidade e data de hoje no BD = weatherBD.map, senão weatherAPI.map
+
                     weatherAPI.map((api) => (
 
                         <div className="weather" key={api.city.id}>
+                            <div className="location">
+                                <FontAwesomeIcon icon={faMapLocationDot} className="element-icon-location" onClick={getUserLocationWeather} />
+                                <div className="text-location">Usar Localização</div>
+                            </div>
 
                             <div className="data-container">
                                 {/* inputs invisiveis que usaremos para guardar dados de referencia */}
@@ -220,7 +265,7 @@ const PaginaInicial = () => {
                             <div className="top-bar">
                                 <input ref={city_name_ref} type="text" placeholder="Digite o nome de uma cidade" onKeyDown={handleKeyDown} />
                                 <div className="search-icon" >
-                                    <FontAwesomeIcon type="submit" icon={faMagnifyingGlass} className="element-icon-search" onClick={getWeather} />
+                                    <FontAwesomeIcon icon={faMagnifyingGlass} className="element-icon-search" onClick={getWeather} />
                                 </div>
                             </div>
                             <div className="weather-image">
@@ -294,7 +339,7 @@ const PaginaInicial = () => {
             </div>
 
         </div>
-        
+
     )
 
 }
