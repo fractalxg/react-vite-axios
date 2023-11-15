@@ -203,13 +203,11 @@ const PaginaInicial = () => {
         getLocation()
         // Chama a função para buscar dados ao montar o componente
         getWeather()
+        
+        console.log(latitude, longitude)
+    }, [latitude, longitude])
 
-    }, [])
 
-    useEffect(() => {
-
-        console.log(latitude, longitude);
-    }, [latitude, longitude]);
 
     return (
 
