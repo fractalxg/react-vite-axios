@@ -109,15 +109,13 @@ const PaginaInicial = () => {
             console.log(error)
         }
 
-
     }
-
+    
     // função assincrona para obter informações de clima e tempo da nossa API/BD
     const getWeather = async () => {
 
-        try {
-            
-
+        try {    
+           
             //requisição para a API
             const response = await axios.get(`${url_forecast}${city_name_ref.current.value}&appid=${api_key}&units=metric&lang=pt_br`)
             //const response = await axios.get(`${local_host}/climate`, { params })
@@ -129,7 +127,7 @@ const PaginaInicial = () => {
             const weatherDay = dayTime.split(' ')
             const weatherDaySplitted = weatherDay[0].split('-')
             const weatherDayFormatted = `${weatherDaySplitted[2]}/${weatherDaySplitted[1]}/${weatherDaySplitted[0]}`
-            
+
             //criando um "json" para fazer o post no BD
             const apiWeatherData = {
                 'today': today.toLocaleDateString(),
@@ -167,11 +165,11 @@ const PaginaInicial = () => {
             }
             console.log([apiWeatherData])
 
-
             //Fazer a requisição para o servidor, indicando o método da requisição
             //o endereço, enviar os dados do "json" e o cabeçalho
             const responsePost = await axios.post(`${local_host}/climate`, apiWeatherData, headers)
             console.log(responsePost)
+            
 
         } catch (error) {
             // requisição para API usando latitude e longitude, se não encontrar usar let local *NAO FINALIZADO*
@@ -180,16 +178,21 @@ const PaginaInicial = () => {
             // setWeatherAPI([response.data])
 
             // } catch (error) {
-            const response = await axios.get(`${url_forecast}${local}&appid=${api_key}&units=metric&lang=pt_br`)
-            //const response = await axios.get(`${local_host}/climate`, { params })
-            setWeatherAPI([response.data])
-            //}
+            try {
+                
+            getUserLocationWeather()
+                
+            } catch (error) {
+                const response = await axios.get(`${url_forecast}${local}&appid=${api_key}&units=metric&lang=pt_br`)
+                //const response = await axios.get(`${local_host}/climate`, { params })
+                setWeatherAPI([response.data]) 
+            }
 
+            //}
 
         }
 
     }
-
 
     useEffect(() => {
         const getLocation = async () => {
@@ -203,21 +206,20 @@ const PaginaInicial = () => {
         getLocation()
         // Chama a função para buscar dados ao montar o componente
         getWeather()
-        
+
         console.log(latitude, longitude)
     }, [latitude, longitude])
-
-
 
     return (
 
         <div className="container">
 
             <div>
-                {(
-
+                {
+                weatherAPI.length === 0 ? (<p className="loading">Carregando...</p>) :
+                (
                     weatherAPI.map((api) => (
-
+                        
                         <div className="weather" key={api.city.id}>
                             <div className="location">
                                 <FontAwesomeIcon icon={faMapLocationDot} className="element-icon-location" onClick={getUserLocationWeather} />

@@ -9,7 +9,7 @@ function App(){
       <Navbar />
       <div className="container">
         <Outlet />
-      </div>
+      </div> 
     </div>
     
   )
