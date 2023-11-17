@@ -9,8 +9,6 @@ const local_host = import.meta.env.VITE_REACT_APP_SERVER_URL
 const url_forecast = "https://api.openweathermap.org/data/2.5/forecast?q="
 let local = "São Paulo"
 
-const date_time = document.getElementsByName("data_main_date")
-
 const dayToWeek = (data) => {
     const objData = new Date(data)
     let day = objData.getDay()
@@ -54,8 +52,10 @@ const PaginaInicial = () => {
     // constantes de latitude e longitude
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
+
     //constantes para setar arquivo que usaremos para extrair as informações de clima e tempo
     const [weatherAPI, setWeatherAPI] = useState([])
+
     const city_name_ref = useRef("")
 
     const [postData, setPostData] = useState({
@@ -142,6 +142,38 @@ const PaginaInicial = () => {
             setWeatherAPI([response.data])
             console.log(response.data)
 
+            setMainDate(formattedDate(response.data.list[0].dt_txt))
+            setMainIcon(response.data.list[0].weather[0].icon)
+            setMainTemp(response.data.list[0].main.temp)
+            setCityName(response.data.city.name)
+            setHumidity(response.data.list[0].main.humidity)
+            setWindSpeed(response.data.list[0].wind.speed)
+
+            setFive_icon_0(`https://openweathermap.org/img/wn/${response.data.list[8].weather[0].icon}@2x.png`)
+            setFive_week_day_0(dayToWeek(response.data.list[8].dt_txt))
+            setFive_max_temp_0(response.data.list[8].main.temp_max)
+            setFive_min_temp_0(response.data.list[8].main.temp_min)
+
+            setFive_icon_1(`https://openweathermap.org/img/wn/${response.data.list[16].weather[0].icon}@2x.png`)
+            setFive_week_day_1(dayToWeek(response.data.list[16].dt_txt))
+            setFive_max_temp_1(response.data.list[16].main.temp_max)
+            setFive_min_temp_1(response.data.list[16].main.temp_min)
+
+            setFive_icon_2(`https://openweathermap.org/img/wn/${response.data.list[24].weather[0].icon}@2x.png`)
+            setFive_week_day_2(dayToWeek(response.data.list[24].dt_txt))
+            setFive_max_temp_2(response.data.list[24].main.temp_max)
+            setFive_min_temp_2(response.data.list[24].main.temp_min)
+
+            setFive_icon_3(`https://openweathermap.org/img/wn/${response.data.list[32].weather[0].icon}@2x.png`)
+            setFive_week_day_3(dayToWeek(response.data.list[32].dt_txt))
+            setFive_max_temp_3(response.data.list[32].main.temp_max)
+            setFive_min_temp_3(response.data.list[32].main.temp_min)
+
+            setFive_icon_4(`https://openweathermap.org/img/wn/${response.data.list[39].weather[0].icon}@2x.png`)
+            setFive_week_day_4(dayToWeek(response.data.list[39].dt_txt))
+            setFive_max_temp_4(response.data.list[39].main.temp_max)
+            setFive_min_temp_4(response.data.list[39].main.temp_min)
+
         } catch (error) {
             console.log(error)
         }
@@ -155,56 +187,144 @@ const PaginaInicial = () => {
         return weatherDayFormatted
     }
 
-    const postWeather = async () => {
+    const getApi = async () => {
+        //requisição para a API
+        const response = await axios.get(`${url_forecast}${city_name_ref.current.value}&appid=${api_key}&units=metric&lang=pt_br`)
+        setWeatherAPI([response.data])
+        console.log([response.data])
 
-        const responsePost = await axios.post(`${local_host}/climate`, postData, headers)
-        console.log(responsePost)
+        setMainDate(formattedDate(response.data.list[0].dt_txt))
+        setMainIcon(response.data.list[0].weather[0].icon)
+        setMainTemp(response.data.list[0].main.temp)
+        setCityName(response.data.city.name)
+        setHumidity(response.data.list[0].main.humidity)
+        setWindSpeed(response.data.list[0].wind.speed)
+
+        setFive_icon_0(`https://openweathermap.org/img/wn/${response.data.list[8].weather[0].icon}@2x.png`)
+        setFive_week_day_0(dayToWeek(response.data.list[8].dt_txt))
+        setFive_max_temp_0(response.data.list[8].main.temp_max)
+        setFive_min_temp_0(response.data.list[8].main.temp_min)
+
+        setFive_icon_1(`https://openweathermap.org/img/wn/${response.data.list[16].weather[0].icon}@2x.png`)
+        setFive_week_day_1(dayToWeek(response.data.list[16].dt_txt))
+        setFive_max_temp_1(response.data.list[16].main.temp_max)
+        setFive_min_temp_1(response.data.list[16].main.temp_min)
+
+        setFive_icon_2(`https://openweathermap.org/img/wn/${response.data.list[24].weather[0].icon}@2x.png`)
+        setFive_week_day_2(dayToWeek(response.data.list[24].dt_txt))
+        setFive_max_temp_2(response.data.list[24].main.temp_max)
+        setFive_min_temp_2(response.data.list[24].main.temp_min)
+
+        setFive_icon_3(`https://openweathermap.org/img/wn/${response.data.list[32].weather[0].icon}@2x.png`)
+        setFive_week_day_3(dayToWeek(response.data.list[32].dt_txt))
+        setFive_max_temp_3(response.data.list[32].main.temp_max)
+        setFive_min_temp_3(response.data.list[32].main.temp_min)
+
+        setFive_icon_4(`https://openweathermap.org/img/wn/${response.data.list[39].weather[0].icon}@2x.png`)
+        setFive_week_day_4(dayToWeek(response.data.list[39].dt_txt))
+        setFive_max_temp_4(response.data.list[39].main.temp_max)
+        setFive_min_temp_4(response.data.list[39].main.temp_min)
     }
 
+    const getBD = async (cityName, weatherDay) => {
+        //requisição para o BD
+        const responseBD = await axios.get(`${local_host}/climate`)
+        console.log(responseBD.data.data)
+
+        const foundData = responseBD.data.data.find(
+            data => data.city_name === cityName && data.weatherDay === weatherDay
+        )
+        if (foundData) {
+            console.log("Dados encontrados no BD");
+            setMainDate(foundData.weatherDay);
+            setMainIcon(foundData.main_icon);
+            setMainTemp(foundData.main_temp);
+            setCityName(foundData.city_name);
+            setHumidity(foundData.humidity);
+            setWindSpeed(foundData.wind_speed);
+
+            setFive_icon_1(foundData.five_icon_1)
+            setFive_week_day_1(foundData.five_week_day_1)
+            setFive_max_temp_1(foundData.five_max_temp_1)
+            setFive_min_temp_1(foundData.five_min_temp_1)
+
+            setFive_icon_2(foundData.five_icon_2)
+            setFive_week_day_2(foundData.five_week_day_2)
+            setFive_max_temp_2(foundData.five_max_temp_2)
+            setFive_min_temp_2(foundData.five_min_temp_2)
+
+            setFive_icon_3(foundData.five_icon_3)
+            setFive_week_day_3(foundData.five_week_day_3)
+            setFive_max_temp_3(foundData.five_max_temp_3)
+            setFive_min_temp_3(foundData.five_min_temp_3)
+
+            setFive_icon_4(foundData.five_icon_4)
+            setFive_week_day_4(foundData.five_week_day_4)
+            setFive_max_temp_4(foundData.five_max_temp_4)
+            setFive_min_temp_4(foundData.five_min_temp_4)
+
+            // Define os demais estados correspondentes aos dados encontrados
+        } else {
+            console.log("Dados não encontrados no BD");
+            // Chame a função para buscar na API ou realize outra ação necessária
+        }
+
+
+        // for (let index = 0; responseBD.data.data.length; index++) {
+        //     if (responseBD.data.data[index].city_name == cityName && responseBD.data.data[index].weatherDay == weatherDay) {
+
+        //         setMainDate(responseBD.data.data[index].weatherDay)
+        //         setMainIcon(responseBD.data.data[index].main_icon)
+        //         setMainTemp(responseBD.data.data[index].main_temp)
+        //         setCityName(responseBD.data.data[index].city_name)
+        //         setHumidity(responseBD.data.data[index].humidity)
+        //         setWindSpeed(responseBD.data.data[index].wind_speed)
+
+        //         setFive_icon_1(responseBD.data.data[index].five_icon_1)
+        //         setFive_week_day_1(responseBD.data.data[index].five_week_day_1)
+        //         setFive_max_temp_1(responseBD.data.data[index].five_max_temp_1)
+        //         setFive_min_temp_1(responseBD.data.data[index].five_min_temp_1)
+
+        //         setFive_icon_2(responseBD.data.data[index].five_icon_2)
+        //         setFive_week_day_2(responseBD.data.data[index].five_week_day_2)
+        //         setFive_max_temp_2(responseBD.data.data[index].five_max_temp_2)
+        //         setFive_min_temp_2(responseBD.data.data[index].five_min_temp_2)
+
+        //         setFive_icon_3(responseBD.data.data[index].five_icon_3)
+        //         setFive_week_day_3(responseBD.data.data[index].five_week_day_3)
+        //         setFive_max_temp_3(responseBD.data.data[index].five_max_temp_3)
+        //         setFive_min_temp_3(responseBD.data.data[index].five_min_temp_3)
+
+        //         setFive_icon_4(responseBD.data.data[index].five_icon_4)
+        //         setFive_week_day_4(responseBD.data.data[index].five_week_day_4)
+        //         setFive_max_temp_4(responseBD.data.data[index].five_max_temp_4)
+        //         setFive_min_temp_4(responseBD.data.data[index].five_min_temp_4)
+
+        //     }
+
+        // }
+
+
+    }
     // constante assincrona para obter informações de clima e tempo da nossa API/BD
     const getWeather = async () => {
 
         try {
-            if ( city_name_ref.current.value.length > 0) {
-
-                //requisição para a API
-                const response = await axios.get(`${url_forecast}${city_name_ref.current.value}&appid=${api_key}&units=metric&lang=pt_br`)
-                setWeatherAPI([response.data])
-                console.log([response.data])
-
-                setMainDate(formattedDate(response.data.list[0].dt_txt))
-                setMainIcon(response.data.list[0].weather[0].icon)
-                setMainTemp(response.data.list[0].main.temp)
-                setCityName(response.data.city.name)
-                setHumidity(response.data.list[0].main.humidity)
-                setWindSpeed(response.data.list[0].wind.speed)
-
-                setFive_icon_0(`https://openweathermap.org/img/wn/${response.data.list[8].weather[0].icon}@2x.png`)
-                setFive_week_day_0(dayToWeek(response.data.list[8].dt_txt))
-                setFive_max_temp_0(response.data.list[8].main.temp_max)
-                setFive_min_temp_0(response.data.list[8].main.temp_min)
-
-                setFive_icon_1(`https://openweathermap.org/img/wn/${response.data.list[16].weather[0].icon}@2x.png`)
-                setFive_week_day_1(dayToWeek(response.data.list[16].dt_txt))
-                setFive_max_temp_1(response.data.list[16].main.temp_max)
-                setFive_min_temp_1(response.data.list[16].main.temp_min)
-
-                setFive_icon_2(`https://openweathermap.org/img/wn/${response.data.list[24].weather[0].icon}@2x.png`)
-                setFive_week_day_2(dayToWeek(response.data.list[24].dt_txt))
-                setFive_max_temp_2(response.data.list[24].main.temp_max)
-                setFive_min_temp_2(response.data.list[24].main.temp_min)
-
-                setFive_icon_3(`https://openweathermap.org/img/wn/${response.data.list[32].weather[0].icon}@2x.png`)
-                setFive_week_day_3(dayToWeek(response.data.list[32].dt_txt))
-                setFive_max_temp_3(response.data.list[32].main.temp_max)
-                setFive_min_temp_3(response.data.list[32].main.temp_min)
-
-                setFive_icon_4(`https://openweathermap.org/img/wn/${response.data.list[39].weather[0].icon}@2x.png`)
-                setFive_week_day_4(dayToWeek(response.data.list[39].dt_txt))
-                setFive_max_temp_4(response.data.list[39].main.temp_max)
-                setFive_min_temp_4(response.data.list[39].main.temp_min)
-
-            } 
+            if (city_name_ref.current.value.length > 0) {
+                const responseBD = await axios.get(`${local_host}/climate`)
+                
+                const foundData = responseBD.data.data.find(
+                    data => data.city_name === city_name_ref.current.value.toUpperCase() && data.weatherDay === today.toLocaleDateString()
+                )
+    
+                if (foundData) {
+                    console.log("Dados encontrados no BD")
+                    getBD(city_name_ref.current.value.toUpperCase(), today.toLocaleDateString())
+                } else {
+                    console.log("Dados não encontrados no BD, buscando na API...")
+                    getApi()
+                }
+            }
 
         } catch (error) {
 
@@ -319,20 +439,21 @@ const PaginaInicial = () => {
         console.log(responsePost)
     }, [postData])
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const getResponseBD = async () =>{
-            const responseBD = await axios.get(`${local_host}/climate`)
-            console.log(responseBD.data.data)
-            responseBD.data.data.map((data) => {
-                console.log(data.city_name)
-                console.log(data.today)
-            })
-            
-        }
-        getResponseBD()
-        
-    }, [])
+    //     const getResponseBD = async () => {
+    //         const responseBD = await axios.get(`${local_host}/climate`)
+    //         console.log(responseBD.data.data)
+    //         responseBD.data.data.map((data) => {
+    //             if (data.city_name == cityName.toUpperCase() && data.weatherDay == today.toLocaleDateString()) {
+    //                 console.log("POSSUI DADOS NO BD")
+    //             }
+    //         })
+
+    //     }
+    //     getResponseBD()
+
+    // }, [postData])
 
 
     return (
@@ -359,22 +480,22 @@ const PaginaInicial = () => {
                                         </div>
                                     </div>
                                     <div className="weather-image">
-                                        <img src={`https://openweathermap.org/img/wn/${api.list[0].weather[0].icon}@2x.png`} alt="" />
+                                        <img src={`https://openweathermap.org/img/wn/${mainIcon}@2x.png`} alt="" />
                                     </div>
-                                    <div className="weather-temp">{api.list[0].main.temp}°c</div>
-                                    <div className="weather-location">{api.city.name}</div>
+                                    <div className="weather-temp">{mainTemp}°c</div>
+                                    <div className="weather-location">{cityName}</div>
                                     <div className="data-container">
                                         <div className="element">
                                             <FontAwesomeIcon icon={faDroplet} className="element-icon" />
                                             <div className="data">
-                                                <div className="humidity-percent">{api.list[0].main.humidity}%</div>
+                                                <div className="humidity-percent">{humidity}%</div>
                                                 <div className="text">Humidade</div>
                                             </div>
                                         </div>
                                         <div className="element">
                                             <FontAwesomeIcon icon={faWind} className="element-icon" />
                                             <div className="data">
-                                                <div className="wind-speed">{api.list[0].wind.speed} km/h</div>
+                                                <div className="wind-speed">{windSpeed} km/h</div>
                                                 <div className="text">Velocidade do Vento</div>
                                             </div>
                                         </div>
@@ -383,38 +504,38 @@ const PaginaInicial = () => {
                                     <div className="temp-container">
 
                                         <div className="temp-0">
-                                            <img src={`https://openweathermap.org/img/wn/${api.list[8].weather[0].icon}@2x.png`} alt="" />
-                                            <p className="week-text">{dayToWeek(api.list[8].dt_txt)}</p>
-                                            <p>Max. {api.list[8].main.temp_max}°c</p>
-                                            <p>Min. {api.list[8].main.temp_min}°c</p>
+                                            <img src={five_icon_0} alt="" />
+                                            <p className="week-text">{five_week_day_0}</p>
+                                            <p>Max. {five_max_temp_0}°c</p>
+                                            <p>Min. {five_min_temp_0}°c</p>
                                         </div>
 
                                         <div className="temp-1">
-                                            <img src={`https://openweathermap.org/img/wn/${api.list[16].weather[0].icon}@2x.png`} alt="" />
-                                            <p className="week-text">{dayToWeek(api.list[16].dt_txt)}</p>
-                                            <p>Max. {api.list[16].main.temp_max}°c</p>
-                                            <p>Min. {api.list[16].main.temp_min}°c</p>
+                                            <img src={five_icon_1} alt="" />
+                                            <p className="week-text">{five_week_day_1}</p>
+                                            <p>Max. {five_max_temp_1}°c</p>
+                                            <p>Min. {five_min_temp_1}°c</p>
                                         </div>
 
                                         <div className="temp-2">
-                                            <img src={`https://openweathermap.org/img/wn/${api.list[24].weather[0].icon}@2x.png`} alt="" />
-                                            <p className="week-text">{dayToWeek(api.list[24].dt_txt)}</p>
-                                            <p>Max. {api.list[24].main.temp_max}°c</p>
-                                            <p>Min. {api.list[24].main.temp_min}°c</p>
+                                            <img src={five_icon_2} alt="" />
+                                            <p className="week-text">{five_week_day_2}</p>
+                                            <p>Max. {five_max_temp_2}°c</p>
+                                            <p>Min. {five_min_temp_2}°c</p>
                                         </div>
 
                                         <div className="temp-3">
-                                            <img src={`https://openweathermap.org/img/wn/${api.list[32].weather[0].icon}@2x.png`} alt="" />
-                                            <p className="week-text">{dayToWeek(api.list[32].dt_txt)}</p>
-                                            <p>Max. {api.list[32].main.temp_max}°c</p>
-                                            <p>Min. {api.list[32].main.temp_min}°c</p>
+                                            <img src={five_icon_3} alt="" />
+                                            <p className="week-text">{five_week_day_3}</p>
+                                            <p>Max. {five_max_temp_3}°c</p>
+                                            <p>Min. {five_min_temp_3}°c</p>
                                         </div>
 
                                         <div className="temp-4">
-                                            <img src={`https://openweathermap.org/img/wn/${api.list[39].weather[0].icon}@2x.png`} alt="" />
-                                            <p className="week-text">{dayToWeek(api.list[39].dt_txt)}</p>
-                                            <p>Max. {api.list[39].main.temp_max}°c</p>
-                                            <p>Min. {api.list[39].main.temp_min}°c</p>
+                                            <img src={five_icon_4} alt="" />
+                                            <p className="week-text">{five_week_day_4}</p>
+                                            <p>Max. {five_max_temp_4}°c</p>
+                                            <p>Min. {five_min_temp_4}°c</p>
                                         </div>
 
                                     </div>
