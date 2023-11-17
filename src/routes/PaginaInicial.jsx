@@ -136,6 +136,10 @@ const PaginaInicial = () => {
         }
     }
 
+    function noAccent(word) {
+        return word.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      }
+
     const getUserLocationWeather = async () => {
         try {
             const response = await axios.get(`${url_forecast}&lat=${latitude}&lon=${longitude}&appid=${api_key}&units=metric&lang=pt_br`)
@@ -235,13 +239,13 @@ const PaginaInicial = () => {
             data => data.city_name === cityName && data.weatherDay === weatherDay
         )
         if (foundData) {
-            console.log("Dados encontrados no BD");
-            setMainDate(foundData.weatherDay);
-            setMainIcon(foundData.main_icon);
-            setMainTemp(foundData.main_temp);
-            setCityName(foundData.city_name);
-            setHumidity(foundData.humidity);
-            setWindSpeed(foundData.wind_speed);
+            console.log("Dados encontrados no BD")
+            setMainDate(foundData.weatherDay)
+            setMainIcon(foundData.main_icon)
+            setMainTemp(foundData.main_temp)
+            setCityName(foundData.city_name)
+            setHumidity(foundData.humidity)
+            setWindSpeed(foundData.wind_speed)
 
             setFive_icon_1(foundData.five_icon_1)
             setFive_week_day_1(foundData.five_week_day_1)
@@ -265,45 +269,9 @@ const PaginaInicial = () => {
 
             // Define os demais estados correspondentes aos dados encontrados
         } else {
-            console.log("Dados não encontrados no BD");
+            console.log("Dados não encontrados no BD")
             // Chame a função para buscar na API ou realize outra ação necessária
         }
-
-
-        // for (let index = 0; responseBD.data.data.length; index++) {
-        //     if (responseBD.data.data[index].city_name == cityName && responseBD.data.data[index].weatherDay == weatherDay) {
-
-        //         setMainDate(responseBD.data.data[index].weatherDay)
-        //         setMainIcon(responseBD.data.data[index].main_icon)
-        //         setMainTemp(responseBD.data.data[index].main_temp)
-        //         setCityName(responseBD.data.data[index].city_name)
-        //         setHumidity(responseBD.data.data[index].humidity)
-        //         setWindSpeed(responseBD.data.data[index].wind_speed)
-
-        //         setFive_icon_1(responseBD.data.data[index].five_icon_1)
-        //         setFive_week_day_1(responseBD.data.data[index].five_week_day_1)
-        //         setFive_max_temp_1(responseBD.data.data[index].five_max_temp_1)
-        //         setFive_min_temp_1(responseBD.data.data[index].five_min_temp_1)
-
-        //         setFive_icon_2(responseBD.data.data[index].five_icon_2)
-        //         setFive_week_day_2(responseBD.data.data[index].five_week_day_2)
-        //         setFive_max_temp_2(responseBD.data.data[index].five_max_temp_2)
-        //         setFive_min_temp_2(responseBD.data.data[index].five_min_temp_2)
-
-        //         setFive_icon_3(responseBD.data.data[index].five_icon_3)
-        //         setFive_week_day_3(responseBD.data.data[index].five_week_day_3)
-        //         setFive_max_temp_3(responseBD.data.data[index].five_max_temp_3)
-        //         setFive_min_temp_3(responseBD.data.data[index].five_min_temp_3)
-
-        //         setFive_icon_4(responseBD.data.data[index].five_icon_4)
-        //         setFive_week_day_4(responseBD.data.data[index].five_week_day_4)
-        //         setFive_max_temp_4(responseBD.data.data[index].five_max_temp_4)
-        //         setFive_min_temp_4(responseBD.data.data[index].five_min_temp_4)
-
-        //     }
-
-        // }
-
 
     }
     // constante assincrona para obter informações de clima e tempo da nossa API/BD
@@ -384,7 +352,7 @@ const PaginaInicial = () => {
         console.log(latitude, longitude)
     }, [latitude, longitude])
 
-
+   
     useEffect(() => {
 
         setPostData(prevData => ({
@@ -393,7 +361,7 @@ const PaginaInicial = () => {
             weatherDay: mainDate,
             main_icon: mainIcon,
             main_temp: mainTemp,
-            city_name: cityName,
+            city_name: noAccent(cityName),
             humidity: humidity,
             wind_speed: windSpeed,
 
@@ -438,23 +406,6 @@ const PaginaInicial = () => {
         const responsePost = axios.post(`${local_host}/climate`, postData, headers)
         console.log(responsePost)
     }, [postData])
-
-    // useEffect(() => {
-
-    //     const getResponseBD = async () => {
-    //         const responseBD = await axios.get(`${local_host}/climate`)
-    //         console.log(responseBD.data.data)
-    //         responseBD.data.data.map((data) => {
-    //             if (data.city_name == cityName.toUpperCase() && data.weatherDay == today.toLocaleDateString()) {
-    //                 console.log("POSSUI DADOS NO BD")
-    //             }
-    //         })
-
-    //     }
-    //     getResponseBD()
-
-    // }, [postData])
-
 
     return (
 
