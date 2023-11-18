@@ -13,10 +13,6 @@ const ConsultasRealizadas = () => {
 
     const getWeather = async () => {
 
-        // const params = {
-        //     'today': today.toLocaleDateString(),
-        //     'city_name': city_name_ref.current.value
-        // }
         const response = await axios.get(`${local_host}/climate`)
         setWeatherBD(response.data.data)
         console.log(response.data.data)
@@ -31,7 +27,9 @@ const ConsultasRealizadas = () => {
     return (
         <div className="home">
             {weatherBD === undefined ? (<p className="loading">Nenhum dado cadastrado</p>) : (
-                weatherBD.length === 0 ? (<p className="loading">Carregando...</p>) : (
+                weatherBD.length === 0 ? (
+                    <p className="loading">Carregando...</p>
+                ) : (
                     weatherBD.map((bd) => (
                         <div className="post" key={bd.id}>
 
@@ -120,7 +118,7 @@ const ConsultasRealizadas = () => {
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
 
 
