@@ -12,6 +12,4 @@ VITE_REACT_APP_SERVER_URL=
 Inicializar o Projeto
 ### npm run dev
 
----------------
-Projeto Atualizado na branch projeto-clima-tempo
 
