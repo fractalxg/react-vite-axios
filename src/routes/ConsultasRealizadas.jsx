@@ -3,7 +3,7 @@ import axios from "axios"
 import "./ConsultasRealizadas.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWind, faDroplet } from '@fortawesome/free-solid-svg-icons'
-
+import Table from 'react-bootstrap/Table'
 
 const local_host = import.meta.env.VITE_REACT_APP_SERVER_URL
 
@@ -31,9 +31,21 @@ const ConsultasRealizadas = () => {
                     <p className="loading">Carregando...</p>
                 ) : (
                     weatherBD.map((bd) => (
+
                         <div className="post" key={bd.id}>
 
+                        <div className="table-data">
                             <div className="post-date">Data da Consulta: {bd.today}</div>
+                            <img className="temp-img-icon" src={`https://openweathermap.org/img/wn/${bd.main_icon}@2x.png`} alt="" />
+                            <p className="table">{bd.main_temp} c°</p>
+                            <p className="table">{bd.city_name}</p>
+                            <p className="table">Humidade: {bd.humidity}%</p>
+                            <p className="table">Vento: {bd.wind_speed} km/h</p>
+                            
+                        </div>
+
+                            
+                            {/* <div className="post-date">Data da Consulta: {bd.today}</div>
                             <h2>Principal</h2>
                             <div className="main-temp">
 
@@ -117,7 +129,7 @@ const ConsultasRealizadas = () => {
                                         <p className="temp">Minima: {bd.five_min_temp_4} c°.</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
 
                         </div>
 

@@ -4,6 +4,7 @@ import { faMagnifyingGlass, faWind, faDroplet, faMapLocationDot } from '@fortawe
 import axios from "axios"
 import "./PaginaInicial.css"
 import { noAccent, formattedDate, dayToWeek } from '../components/Utils'
+import Button from 'react-bootstrap/Button'
 
 const api_key = import.meta.env.VITE_REACT_APP_API_KEY
 const local_host = import.meta.env.VITE_REACT_APP_SERVER_URL
@@ -19,13 +20,14 @@ const headers = {
 }
 
 const PaginaInicial = () => {
-    
+
     // constantes de latitude e longitude
     const [latitude, setLatitude] = useState("")
     const [longitude, setLongitude] = useState("")
 
     // constante para usar uma referencia no input da cidade
     const city_name_ref = useRef("")
+    const city_name_ref_mobile = useRef("")
 
     // constantes que usaremos para os dados da nossa aplicação
     const [mainDate, setMainDate] = useState('')
@@ -288,7 +290,7 @@ const PaginaInicial = () => {
             }
             else {
                 console.log("Sem latitude e longitude, ative a localização no navegador...")
-                
+
             }
 
         } catch (error) {
@@ -304,7 +306,7 @@ const PaginaInicial = () => {
                 getBD(noAccent(city_name_ref.current.value.toUpperCase()), today.toLocaleDateString())
             } else {
 
-            getUserLocationWeather()
+                getUserLocationWeather()
             }
 
         } catch (error) {
@@ -316,7 +318,7 @@ const PaginaInicial = () => {
     }
 
     useEffect(() => {
-        
+
         const getLocation = async () => {
             navigator.geolocation.getCurrentPosition((position) => {
                 setLatitude(position.coords.latitude)
@@ -397,6 +399,7 @@ const PaginaInicial = () => {
         <div className="container">
 
             <div className="weather">
+
                 <div className="location">
                     <FontAwesomeIcon icon={faMapLocationDot} className="element-icon-location" onClick={getUserLocationWeather} />
                     <div className="text-location">Usar Localização</div>
@@ -408,6 +411,13 @@ const PaginaInicial = () => {
                         <FontAwesomeIcon icon={faMagnifyingGlass} className="element-icon-search" onClick={getWeather} />
                     </div>
                 </div>
+
+                {/* EXIBIÇÃO MOBILE */}
+                <div class="d-md-none">
+                    <button className="button-mobile" onClick={getWeather}><FontAwesomeIcon icon={faMagnifyingGlass} className="element-icon-search-mobile" /></button>
+                </div>
+                {/* EXIBIÇÃO MOBILE */}
+
                 <div className="weather-image">
                     <img src={`https://openweathermap.org/img/wn/${mainIcon}@2x.png`} alt="" />
                 </div>
@@ -433,43 +443,48 @@ const PaginaInicial = () => {
                 <div className="temp-container">
 
                     <div className="temp-0">
-                        <img src={five_icon_0} alt="" />
+                        <img className="five-icon" src={five_icon_0} alt="" />
                         <p className="week-text">{five_week_day_0}</p>
-                        <p>Max. {five_max_temp_0}°c</p>
-                        <p>Min. {five_min_temp_0}°c</p>
+                        <p className="week-temp">Max. {five_max_temp_0}°c</p>
+                        <p className="week-temp">Min. {five_min_temp_0}°c</p>
                     </div>
 
                     <div className="temp-1">
-                        <img src={five_icon_1} alt="" />
+                        <img className="five-icon" src={five_icon_1} alt="" />
                         <p className="week-text">{five_week_day_1}</p>
-                        <p>Max. {five_max_temp_1}°c</p>
-                        <p>Min. {five_min_temp_1}°c</p>
+                        <p className="week-temp">Max. {five_max_temp_1}°c</p>
+                        <p className="week-temp">Min. {five_min_temp_1}°c</p>
                     </div>
 
                     <div className="temp-2">
-                        <img src={five_icon_2} alt="" />
+                        <img className="five-icon" src={five_icon_2} alt="" />
                         <p className="week-text">{five_week_day_2}</p>
-                        <p>Max. {five_max_temp_2}°c</p>
-                        <p>Min. {five_min_temp_2}°c</p>
+                        <p className="week-temp">Max. {five_max_temp_2}°c</p>
+                        <p className="week-temp">Min. {five_min_temp_2}°c</p>
                     </div>
 
                     <div className="temp-3">
-                        <img src={five_icon_3} alt="" />
+                        <img className="five-icon" src={five_icon_3} alt="" />
                         <p className="week-text">{five_week_day_3}</p>
-                        <p>Max. {five_max_temp_3}°c</p>
-                        <p>Min. {five_min_temp_3}°c</p>
+                        <p className="week-temp">Max. {five_max_temp_3}°c</p>
+                        <p className="week-temp">Min. {five_min_temp_3}°c</p>
                     </div>
 
                     <div className="temp-4">
-                        <img src={five_icon_4} alt="" />
+                        <img className="five-icon" src={five_icon_4} alt="" />
                         <p className="week-text">{five_week_day_4}</p>
-                        <p>Max. {five_max_temp_4}°c</p>
-                        <p>Min. {five_min_temp_4}°c</p>
+                        <p className="week-temp">Max. {five_max_temp_4}°c</p>
+                        <p className="week-temp">Min. {five_min_temp_4}°c</p>
                     </div>
 
                 </div>
 
             </div>
+
+
+
+
+
 
         </div>
 
