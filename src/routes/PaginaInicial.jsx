@@ -4,7 +4,6 @@ import { faMagnifyingGlass, faWind, faDroplet, faMapLocationDot } from '@fortawe
 import axios from "axios"
 import "./PaginaInicial.css"
 import { noAccent, formattedDate, dayToWeek } from '../components/Utils'
-import Button from 'react-bootstrap/Button'
 
 const api_key = import.meta.env.VITE_REACT_APP_API_KEY
 const local_host = import.meta.env.VITE_REACT_APP_SERVER_URL
@@ -27,7 +26,6 @@ const PaginaInicial = () => {
 
     // constante para usar uma referencia no input da cidade
     const city_name_ref = useRef("")
-    const city_name_ref_mobile = useRef("")
 
     // constantes que usaremos para os dados da nossa aplicação
     const [mainDate, setMainDate] = useState('')
@@ -305,9 +303,9 @@ const PaginaInicial = () => {
             if (city_name_ref.current.value.length > 0) {
                 getBD(noAccent(city_name_ref.current.value.toUpperCase()), today.toLocaleDateString())
             } else {
-
                 getUserLocationWeather()
             }
+           
 
         } catch (error) {
 
@@ -394,97 +392,93 @@ const PaginaInicial = () => {
 
     }, [postData])
 
+
     return (
 
         <div className="container">
 
-            <div className="weather">
+                <div className="weather">
 
-                <div className="location">
-                    <FontAwesomeIcon icon={faMapLocationDot} className="element-icon-location" onClick={getUserLocationWeather} />
-                    <div className="text-location">Usar Localização</div>
-                </div>
-
-                <div className="top-bar">
-                    <input ref={city_name_ref} type="text" placeholder="Digite o nome de uma cidade" onKeyDown={handleKeyDown} />
-                    <div className="search-icon" >
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className="element-icon-search" onClick={getWeather} />
+                    <div className="location">
+                        <FontAwesomeIcon icon={faMapLocationDot} className="element-icon-location" onClick={getUserLocationWeather} />
+                        <div className="text-location">Usar Localização</div>
                     </div>
-                </div>
 
-                {/* EXIBIÇÃO MOBILE */}
-                <div class="d-md-none">
-                    <button className="button-mobile" onClick={getWeather}><FontAwesomeIcon icon={faMagnifyingGlass} className="element-icon-search-mobile" /></button>
-                </div>
-                {/* EXIBIÇÃO MOBILE */}
-
-                <div className="weather-image">
-                    <img src={`https://openweathermap.org/img/wn/${mainIcon}@2x.png`} alt="" />
-                </div>
-                <div className="weather-temp">{mainTemp}°c</div>
-                <div className="weather-location">{cityName}</div>
-                <div className="data-container">
-                    <div className="element">
-                        <FontAwesomeIcon icon={faDroplet} className="element-icon" />
-                        <div className="data">
-                            <div className="humidity-percent">{humidity}%</div>
-                            <div className="text">Humidade</div>
+                    <div className="top-bar">
+                        <input ref={city_name_ref} type="text" placeholder="Digite o nome de uma cidade" onKeyDown={handleKeyDown} />
+                        <div className="search-icon" >
+                            <FontAwesomeIcon icon={faMagnifyingGlass} className="element-icon-search" onClick={getWeather} />
                         </div>
                     </div>
-                    <div className="element">
-                        <FontAwesomeIcon icon={faWind} className="element-icon" />
-                        <div className="data">
-                            <div className="wind-speed">{windSpeed} km/h</div>
-                            <div className="text">Velocidade do Vento</div>
+
+                    {/* EXIBIÇÃO MOBILE */}
+                    <div class="d-md-none">
+                        <button className="button-mobile" onClick={getWeather}><FontAwesomeIcon icon={faMagnifyingGlass} className="element-icon-search-mobile" /></button>
+                    </div>
+                    {/* EXIBIÇÃO MOBILE */}
+
+                    <div className="weather-image">
+                        <img src={`https://openweathermap.org/img/wn/${mainIcon}@2x.png`} alt="" />
+                    </div>
+                    <div className="weather-temp">{mainTemp}°c</div>
+                    <div className="weather-location">{cityName}</div>
+                    <div className="data-container">
+                        <div className="element">
+                            <FontAwesomeIcon icon={faDroplet} className="element-icon" />
+                            <div className="data">
+                                <div className="humidity-percent">{humidity}%</div>
+                                <div className="text">Humidade</div>
+                            </div>
+                        </div>
+                        <div className="element">
+                            <FontAwesomeIcon icon={faWind} className="element-icon" />
+                            <div className="data">
+                                <div className="wind-speed">{windSpeed} km/h</div>
+                                <div className="text">Velocidade do Vento</div>
+                            </div>
                         </div>
                     </div>
+
+                    <div className="temp-container">
+
+                        <div className="temp-0">
+                            <img className="five-icon" src={five_icon_0} alt="" />
+                            <p className="week-text">{five_week_day_0}</p>
+                            <p className="week-temp">Max. {five_max_temp_0}°c</p>
+                            <p className="week-temp">Min. {five_min_temp_0}°c</p>
+                        </div>
+
+                        <div className="temp-1">
+                            <img className="five-icon" src={five_icon_1} alt="" />
+                            <p className="week-text">{five_week_day_1}</p>
+                            <p className="week-temp">Max. {five_max_temp_1}°c</p>
+                            <p className="week-temp">Min. {five_min_temp_1}°c</p>
+                        </div>
+
+                        <div className="temp-2">
+                            <img className="five-icon" src={five_icon_2} alt="" />
+                            <p className="week-text">{five_week_day_2}</p>
+                            <p className="week-temp">Max. {five_max_temp_2}°c</p>
+                            <p className="week-temp">Min. {five_min_temp_2}°c</p>
+                        </div>
+
+                        <div className="temp-3">
+                            <img className="five-icon" src={five_icon_3} alt="" />
+                            <p className="week-text">{five_week_day_3}</p>
+                            <p className="week-temp">Max. {five_max_temp_3}°c</p>
+                            <p className="week-temp">Min. {five_min_temp_3}°c</p>
+                        </div>
+
+                        <div className="temp-4">
+                            <img className="five-icon" src={five_icon_4} alt="" />
+                            <p className="week-text">{five_week_day_4}</p>
+                            <p className="week-temp">Max. {five_max_temp_4}°c</p>
+                            <p className="week-temp">Min. {five_min_temp_4}°c</p>
+                        </div>
+
+                    </div>
+
                 </div>
-
-                <div className="temp-container">
-
-                    <div className="temp-0">
-                        <img className="five-icon" src={five_icon_0} alt="" />
-                        <p className="week-text">{five_week_day_0}</p>
-                        <p className="week-temp">Max. {five_max_temp_0}°c</p>
-                        <p className="week-temp">Min. {five_min_temp_0}°c</p>
-                    </div>
-
-                    <div className="temp-1">
-                        <img className="five-icon" src={five_icon_1} alt="" />
-                        <p className="week-text">{five_week_day_1}</p>
-                        <p className="week-temp">Max. {five_max_temp_1}°c</p>
-                        <p className="week-temp">Min. {five_min_temp_1}°c</p>
-                    </div>
-
-                    <div className="temp-2">
-                        <img className="five-icon" src={five_icon_2} alt="" />
-                        <p className="week-text">{five_week_day_2}</p>
-                        <p className="week-temp">Max. {five_max_temp_2}°c</p>
-                        <p className="week-temp">Min. {five_min_temp_2}°c</p>
-                    </div>
-
-                    <div className="temp-3">
-                        <img className="five-icon" src={five_icon_3} alt="" />
-                        <p className="week-text">{five_week_day_3}</p>
-                        <p className="week-temp">Max. {five_max_temp_3}°c</p>
-                        <p className="week-temp">Min. {five_min_temp_3}°c</p>
-                    </div>
-
-                    <div className="temp-4">
-                        <img className="five-icon" src={five_icon_4} alt="" />
-                        <p className="week-text">{five_week_day_4}</p>
-                        <p className="week-temp">Max. {five_max_temp_4}°c</p>
-                        <p className="week-temp">Min. {five_min_temp_4}°c</p>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-
-
 
         </div>
 

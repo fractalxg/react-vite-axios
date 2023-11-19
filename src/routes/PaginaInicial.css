@@ -3,7 +3,6 @@
     margin: auto;
 }
 
-/* ESTILIZAÇÃO PARA DESKTOP */
 .top-bar {
     display: flex;
     justify-content: center;
@@ -77,7 +76,7 @@
 .weather-temp {
     display: flex;
     justify-content: center;
-    color: #fff;
+    color: #000000;
     font-size: 60px;
     font-weight: 400;
 }
@@ -85,14 +84,14 @@
 .weather-location {
     display: flex;
     justify-content: center;
-    color: #fff;
+    color: #000000;
     font-size: 40px;
     font-weight: 400;
 }
 
 .data-container {
 
-    color: #fff;
+    color: #000000;
     display: flex;
     justify-content: center;
     margin-bottom: 50px;
@@ -119,7 +118,7 @@
 
 .element-icon {
     margin-top: 10px;
-    color: #ffffff;
+    color: #000000;
     width: 50px;
     height: 50px;
 }
@@ -133,12 +132,12 @@
 }
 
 .temp-container {
-    color: #fff;
+    color: #000000;
     display: flex;
     justify-content: center;
     gap: 10px;
     padding-top: 25px;
-    border-top: 1px solid #c7c7c7;
+    border-top: 1px solid #000000;
 
 }
 
@@ -178,9 +177,10 @@
     }
 
     .element-icon-search-mobile {
-        width: 20px;
-        height: 20px;
-        color: #fff;
+        align-items: center;
+        width: 22px;
+        height: 22px;
+        color: #ffffff;
     }
 
     .button-mobile {
@@ -229,7 +229,7 @@
     }
     .week-text{
         font-size: 11px;
-        font-weight: 300;
+        font-weight: 600;
     }
     .week-temp{
         font-size: 14px;
@@ -254,7 +254,7 @@
 }
 
 p {
-    color: #fff;
+    color: #000000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -269,7 +269,7 @@ img {
 
 a {
     text-decoration: none;
-    color: #fff;
+    color: #ffffff;
     opacity: 0.7;
     transition: 0.3s;
 }
@@ -283,8 +283,8 @@ ul {
 }
 
 body {
-    background-color: #0e1217;
-    color: #fff;
+    background-color: #bbbbbb;
+    color: #000000;
 }
 
 * {
