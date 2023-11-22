@@ -1,3 +1,6 @@
+DEPLOY DO PROJETO
+https://clima-tempo-one.vercel.app/
+
 COMO RODAR O PROJETO
 
 Abra o terminal e entre no diretório/pasta onde os arquivos serão salvos
