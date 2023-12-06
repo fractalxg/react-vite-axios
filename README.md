@@ -1,3 +1,5 @@
+![image](https://github.com/fractalxg/react-vite-axios/assets/147837025/c631903c-d8fb-42fc-8630-e64bfe8458a4)
+
 DEPLOY DO PROJETO
 https://clima-tempo-one.vercel.app/
 
