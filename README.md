@@ -1,5 +1,8 @@
 ![image](https://github.com/fractalxg/react-vite-axios/assets/147837025/c631903c-d8fb-42fc-8630-e64bfe8458a4)
 
+Aplicação de consulta de temperatura da região que o usuário se encontra ou a partir do país/cidade/estado.
+Os dados da API são armazenados em um EC2 da AWS para futuras consultas.
+
 DEPLOY DO PROJETO
 https://clima-tempo-one.vercel.app/
 
